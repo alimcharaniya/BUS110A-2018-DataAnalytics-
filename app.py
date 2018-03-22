@@ -69,6 +69,12 @@ def login():
     return render_template('login.html', error=error)
 
 
+@app.route('/register')
+def register():
+    return render_template('register.html')  # render a template
+
+
+
 @app.route('/logout')
 @login_required
 def logout():
