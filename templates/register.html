@@ -10,15 +10,15 @@
 <div id="fullscreen_bg" class="fullscreen_bg"/>
 <div class="container">
 <div class="col-lg-8 col-lg-offset-2">
-    <form class="form-signin">
+    <form class="form-signin" method="post">
         <h1 class="form-signin-heading text-muted text-center">Register a new user </h1>
         
 
-        <input type="text" class="form-control" placeholder="First Name" required="" autofocus="">
-        <input type="text" style="margin-top:25px;" class="form-control" placeholder="Last Name" required="" autofocus="">
-        <input type="text" style="margin-top:25px;" class="form-control" placeholder="Email Address" required="" autofocus="">
-        <input type="password" style="margin-top:25px;" class="form-control" placeholder="Employee ID" required="">
-        <input type="password" style="margin-top:25px;" class="form-control" placeholder="Password" required="">
+        <input type="text" class="form-control" placeholder="First Name" required="" autofocus="" name="fName" value="{{request.form.fName }}">
+        <input type="text" style="margin-top:25px;" class="form-control" placeholder="Last Name" name="lName" value="{{request.form.lName }}" required="" autofocus="">
+        <input type="text" style="margin-top:25px;" class="form-control" placeholder="Email Address" name="email" value="{{request.form.email }}" required="" autofocus="">
+        <input type="password" style="margin-top:25px;" class="form-control" placeholder="Employee ID" name="id"value="{{request.form.id }}" required="">
+        <input type="password" style="margin-top:25px;" class="form-control" placeholder="Password" name="pass"value="{{request.form.pass }}" required="">
     
 		<button style="margin-top:25px;" class="btn btn-lg btn-primary btn-block" type="submit">
 			Register new user

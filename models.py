@@ -29,6 +29,6 @@ class Employee(db.Model):
     def __init__(self, FirstName, LastName, EmailAddress, Password, EmployeeID):
         self.FirstName = FirstName
         self.LastName = LastName
-        self.Email = Email
+        self.Email = EmailAddress
         self.Password = Password
         self.EmployeeID = EmployeeID
