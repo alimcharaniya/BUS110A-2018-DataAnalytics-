@@ -19,6 +19,24 @@ db = SQLAlchemy(app)
 # import db schema
 from models import *
 
+import pandas as pd 
+#connect python to xlsx file and tell it which sheet to focus on.
+xl = pd.ExcelFile('SalesDataFull.xlsx')
+
+## INSIGHT 1 
+## Display top and bottom 10 states by profit 
+OrdersOnlyData = xl.parse('Orders')
+
+#Top/Bottom 20% of states sorted according to profits gained/lost. 
+State_Profit_Col = OrdersOnlyData[['State','Profit']]
+State_Profits = State_Profit_Col.groupby(by='State').sum().sort_values(by='Profit', ascending = False) 
+# print("\nStates with the highest profit.")
+topStatesArray = (State_Profits.head(10)) 
+bottomStatesArray = (State_Profits.tail(10))
+
+
+
+OrdersOnlyData = xl.parse('Orders')
 
 # login required decorator
 def login_required(f):
@@ -48,6 +66,14 @@ def home():
 def welcome():
     return render_template('welcome.html')  # render a template
 
+@app.route('/insight-one')
+@login_required
+def insightOne():
+    print bottomStatesArray
+    # print isinstance(bottomStatesArray, list)
+    return render_template('insight-one.html', badStates = bottomStatesArray, goodStates=topStatesArray)  # render a template
+
+
 
 # route for handling the login page logic
 @app.route('/login', methods=['GET', 'POST'])
@@ -57,7 +83,7 @@ def login():
     if request.method == 'POST':
         # print request.form
         try:
-            user = Employee.query.filter_by(FirstName=request.form['username']).first()
+            user = Employee.query.filter_by(Email=request.form['username']).first()
             actualPass = user.Password
 
             if (actualPass == request.form['password']):
