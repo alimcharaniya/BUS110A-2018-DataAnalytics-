@@ -95,21 +95,21 @@ def login():
                 error = 'Invalid Credentials. Please try again.'
 
         except:
-            print "This is an error message!"
+            print ("This is an error message!")
             error = 'Invalid Credentials. Please try again.'
     
     return render_template('login.html', error=error)
 
 
 def insertUserIntoDatabase(fName, lName, email, uid, password):
-    print 'INSERTING USER TO DB'
+    print ('INSERTING USER TO DB')
     newUser = Employee(fName, lName, email, password, uid)
     try:
         db.session.add(newUser)
         db.session.commit()
     except:
         db.session.rollback()
-        print 'CAUGHT AN ERROR!!'
+        print ('CAUGHT AN ERROR!!')
         return False; 
     finally:
         db.session.close()  # optional, depends on use case
@@ -120,7 +120,7 @@ def insertUserIntoDatabase(fName, lName, email, uid, password):
 def checkInputs(email, uid, password):
      # 1. check if email address contains one '@' sign 
     if '@' in email: 
-        print 'yes... email contains @ sign'
+        print ('yes... email contains @ sign')
     else:
         return False
 
@@ -154,16 +154,16 @@ def register():
             didInsert = insertUserIntoDatabase(fName, lName, email, uid, password)
 
             if(didInsert == False):
-                print 'FAILED TO INSERT'
+                print ('FAILED TO INSERT')
                 error = 'User with that data already exists'
                 return render_template('register.html', error = error)  # render a template
             else:
-                print 'SUCCESSFUL INSERT'   
+                print ('SUCCESSFUL INSERT')   
                 error = 'SUCCESSFULLY ADDED NEW EMPLOYEE' 
                 return render_template('register.html', error = error)  # render a template
 
         else:
-            print 'NO, TELL THE USER TO CHECK THEIR INPUTS...'
+            print ('NO, TELL THE USER TO CHECK THEIR INPUTS...')
             error = 'You must enter a valid email, numbers only for employee ID and minimum 4 characters, at least 6 characters for password...'
 
             return render_template('register.html', error = error)  # render a template
