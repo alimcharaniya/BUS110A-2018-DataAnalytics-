@@ -1,5 +1,5 @@
 # import the Flask class from the flask module
-from flask import Flask, render_template, redirect, \
+from flask import Flask, render_template, json, redirect, \
     url_for, request, session, flash
 from functools import wraps
 from flask_sqlalchemy import SQLAlchemy
@@ -22,19 +22,6 @@ from models import *
 import pandas as pd 
 #connect python to xlsx file and tell it which sheet to focus on.
 xl = pd.ExcelFile('SalesDataFull.xlsx')
-
-## INSIGHT 1 
-## Display top and bottom 10 states by profit 
-OrdersOnlyData = xl.parse('Orders')
-
-#Top/Bottom 20% of states sorted according to profits gained/lost. 
-State_Profit_Col = OrdersOnlyData[['State','Profit']]
-State_Profits = State_Profit_Col.groupby(by='State').sum().sort_values(by='Profit', ascending = False) 
-# print("\nStates with the highest profit.")
-topStatesArray = (State_Profits.head(10)) 
-bottomStatesArray = (State_Profits.tail(10))
-
-
 
 OrdersOnlyData = xl.parse('Orders')
 
@@ -69,9 +56,28 @@ def welcome():
 @app.route('/insight-one')
 @login_required
 def insightOne():
-    print bottomStatesArray
-    # print isinstance(bottomStatesArray, list)
-    return render_template('insight-one.html', badStates = bottomStatesArray, goodStates=topStatesArray)  # render a template
+    # print str(idList[1]).encode('utf-8')
+    OrdersOnlyData = xl.parse('Orders')
+    State_Profit_Col = OrdersOnlyData[['State','Profit']]
+
+
+    profitsInOrderOfStatesArray =  State_Profit_Col.groupby(by='State').sum().sort_values(by='Profit', ascending = False).values.tolist()[:10]
+    statesInOrderOfProfitArray = State_Profit_Col.groupby(by='State').sum().sort_values(by='Profit', ascending = False).index.get_level_values(0).tolist()[:10]
+    # print statesInOrderOfProfitArray[:10] #10 states in order
+    # print statesInOrderOfProfitArray
+    resultsArray = []
+    for i in range(10):
+        f = (statesInOrderOfProfitArray[i].decode('utf-8'))
+        resultsArray.append(f)
+
+    myString = " ".join(resultsArray)
+
+    profitArray = []
+    for d in range(10):
+        p = (profitsInOrderOfStatesArray[d])
+        profitArray.append(p)
+
+    return render_template('insight-one.html', resultsArray=myString, profitArray = profitArray)  # render a template
 
 
 

@@ -8,42 +8,18 @@ Return_ID_Col = ReturnsOnlyData[['Order ID']]
 idList =  Return_ID_Col.values.tolist()
 
 # print str(idList[1]).encode('utf-8')
-
-resultList = []
 OrdersOnlyData = xl.parse('Orders')
-
-for item in idList:         
-    findThisID =  u", ".join(item)
-    a = OrdersOnlyData.loc[OrdersOnlyData['Order ID'] == findThisID]
-    resultList.append(a['Product Name'])
-
-print resultList
+State_Profit_Col = OrdersOnlyData[['State','Profit']]
 
 
+profitsInOrderOfStatesArray =  State_Profit_Col.groupby(by='State').sum().sort_values(by='Profit', ascending = False).values.tolist()[:10]
+statesInOrderOfProfitArray = State_Profit_Col.groupby(by='State').sum().sort_values(by='Profit', ascending = False).index.get_level_values(0).tolist()
+# print statesInOrderOfProfitArray[:10] #10 states in order
+# print statesInOrderOfProfitArray
 
+resultsArray = []
+for i in range(10):
+    print(statesInOrderOfProfitArray[i].encode('utf-8'))
+    resultsArray.append(statesInOrderOfProfitArray[i])
 
-# print a['Product Name']
-
-
-
-
-# #Top/Bottom 20% of states sorted according to profits gained/lost. 
-# State_Profit_Col = OrdersOnlyData[['State','Profit']]
-# State_Profits = State_Profit_Col.groupby(by='State').sum().sort_values(by='Profit', ascending = False) 
-# print("\nStates with the highest profit.")
-
-
-# # print(State_Profits.head(10).columns) 
-
-
-# print State_Profit_Col.columns
-# print State_Profits.head(10).values.tolist()
-
-
-
-# print('='*30)
-# print("\nStates with the lowest profit.")
-# print(State_Profits.tail(10))
-# #tail_ending = tail_end + State_Profits[::-1] 
-# #print(tail_ending)
-
+print resultsArray
