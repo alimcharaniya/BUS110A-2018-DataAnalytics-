@@ -19,7 +19,7 @@ db = SQLAlchemy(app)
 # import db schema
 from models import *
 
-import pandas as pd 
+import pandas as pd
 #connect python to xlsx file and tell it which sheet to focus on.
 xl = pd.ExcelFile('SalesDataFull.xlsx')
 
@@ -56,10 +56,13 @@ def welcome():
 @app.route('/insight-one')
 @login_required
 def insightOne():
-    # print str(idList[1]).encode('utf-8')
+
+    # SET UP ORDER SHEET
+
     OrdersOnlyData = xl.parse('Orders')
     State_Profit_Col = OrdersOnlyData[['State','Profit']]
 
+    # TOP PERFORMING STATES HANDLING #
 
     profitsInOrderOfStatesArray =  State_Profit_Col.groupby(by='State').sum().sort_values(by='Profit', ascending = False).values.tolist()[:10]
     statesInOrderOfProfitArray = State_Profit_Col.groupby(by='State').sum().sort_values(by='Profit', ascending = False).index.get_level_values(0).tolist()[:10]
@@ -77,7 +80,24 @@ def insightOne():
         p = (profitsInOrderOfStatesArray[d])
         profitArray.append(p)
 
-    return render_template('insight-one.html', resultsArray=myString, profitArray = profitArray)  # render a template
+    # WORST PERFORMING STATES HANDLING #
+
+    badProfitsByStatesArray =  State_Profit_Col.groupby(by='State').sum().sort_values(by='Profit', ascending = False).values.tolist()[-10:]
+    badStatesByProfitArray = State_Profit_Col.groupby(by='State').sum().sort_values(by='Profit', ascending = False).index.get_level_values(0).tolist()[-10:]
+
+    badStatesResultArray = []
+    for i in range(10):
+        f = (badStatesByProfitArray[i].decode('utf-8'))
+        badStatesResultArray.append(f)
+
+    badStatesString = " ".join(badStatesResultArray)
+
+    badProfitArray = []
+    for d in range(10):
+        p = (badProfitsByStatesArray[d])
+        badProfitArray.append(p)
+
+    return render_template('insight-one.html', resultsArray=myString, profitArray = profitArray, badStatesArray=badStatesString, badStatesProfit=badProfitArray)  # render a template
 
 
 
@@ -95,7 +115,7 @@ def login():
             if (actualPass == request.form['password']):
                 session['logged_in'] = True
                 flash('You were logged in.')
-                
+
                 return redirect(url_for('home'))
             else:
                 error = 'Invalid Credentials. Please try again.'
@@ -103,7 +123,7 @@ def login():
         except:
             print ("This is an error message!")
             error = 'Invalid Credentials. Please try again.'
-    
+
     return render_template('login.html', error=error)
 
 
@@ -116,7 +136,7 @@ def insertUserIntoDatabase(fName, lName, email, uid, password):
     except:
         db.session.rollback()
         print ('CAUGHT AN ERROR!!')
-        return False; 
+        return False;
     finally:
         db.session.close()  # optional, depends on use case
 
@@ -124,8 +144,8 @@ def insertUserIntoDatabase(fName, lName, email, uid, password):
 
 
 def checkInputs(email, uid, password):
-     # 1. check if email address contains one '@' sign 
-    if '@' in email: 
+     # 1. check if email address contains one '@' sign
+    if '@' in email:
         print ('yes... email contains @ sign')
     else:
         return False
@@ -135,12 +155,12 @@ def checkInputs(email, uid, password):
         if(uid.isdigit() == False):
             return False
     else:
-        return False; 
-    
-    #3. check if password has more than 5 characters 
+        return False;
+
+    #3. check if password has more than 5 characters
     if (len(password) < 5):
         return False
-    
+
     # If no triggers are hit, return true
     return True
 
@@ -152,7 +172,7 @@ def register():
         # We know all fields exist bc the log is implemented in front end
         fName = request.form['fName'] #safe to assume this is provided
         lName = request.form['lName'] #safe to assume this is provided
-        email = request.form['email'] #check if valid email 
+        email = request.form['email'] #check if valid email
         uid = request.form['id'] #4 number minimum, no letters.
         password = request.form['pass']
 
@@ -164,8 +184,8 @@ def register():
                 error = 'User with that data already exists'
                 return render_template('register.html', error = error)  # render a template
             else:
-                print ('SUCCESSFUL INSERT')   
-                error = 'SUCCESSFULLY ADDED NEW EMPLOYEE' 
+                print ('SUCCESSFUL INSERT')
+                error = 'SUCCESSFULLY ADDED NEW EMPLOYEE'
                 return render_template('register.html', error = error)  # render a template
 
         else:
@@ -194,6 +214,3 @@ def connect_db():
 # start the server with the 'run()' method
 if __name__ == '__main__':
     app.run(debug=True)
-
-
-

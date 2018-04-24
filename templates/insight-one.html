@@ -1,17 +1,14 @@
 {% extends "base.html" %}
 {% block content %}
 
-<h1>INSIGHT 1</h1>
+<h1>Top Performing States by Profit</h1>
 
-
-<!-- <h2>
-    Top performing states
-    {% for state in resultsArray %}
-  <strong>State:</strong> {{ state }} <br>
-{% endfor %}
-</h2> -->
-<h2>resu</h2>
 <canvas id="myChart" width="400" height="400"></canvas>
+
+
+<h1 style="margin-top: 15vh">Worst Performing States by Profit</h1>
+
+<canvas id="mySecondChart" width="400" height="400"></canvas>
 
 
 <h2>
@@ -22,7 +19,13 @@
 <script>
     var ctx = document.getElementById("myChart").getContext('2d');
     var a = '{{resultsArray}}'
-    var b = a.split(/(\s+)/).filter( function(e) { return e.trim().length > 0; } );
+    var b = a.split(/(\s+)/).filter( function(e) {
+      return e.trim().length > 0;
+    });
+    // Remove New York two seperate words and change "New" to "New York"
+    b.splice(1, 1);
+    b[1] = "New York"
+    console.log(b);
 
     var c = {{profitArray}}
     var d = [];
@@ -36,15 +39,19 @@
         data: {
             labels: b,
             datasets: [{
-                label: '# of Votes',
+                label: 'Profit in Dollars $',
                 data: d,
                 backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)',
+                  'rgba(255, 159, 64, 0.2)',
+                  'rgba(243, 102, 255, 0.2)',
+                  'rgba(94, 159, 64, 0.2)',
+                  'rgba(187, 159, 64, 0.2)'
                 ],
                 borderColor: [
                     'rgba(255,99,132,1)',
@@ -67,6 +74,72 @@
             }
         }
     });
+
+
+    // Deal with low states....
+    var chart = document.getElementById("mySecondChart").getContext('2d');
+    var badStatesString = '{{badStatesArray}}'
+    var badStatesStringToArray = badStatesString.split(/(\s+)/).filter( function(e) {
+      return e.trim().length > 0;
+    });
+    // Remove New York two seperate words and change "New" to "New York"
+    badStatesStringToArray.splice(5, 1);
+    badStatesStringToArray[5] = "North Carlolina"
+    console.log(badStatesStringToArray);
+
+    var badStatesProfitRawArray = {{badStatesProfit}}
+    var badStatesProfitResultsArray = [];
+    for(var i = 0; i < 10; i++){
+        badStatesProfitResultsArray.push(badStatesProfitRawArray[i][0])
+    }
+    console.log(badStatesProfitResultsArray);
+
+    var myChart = new Chart(chart, {
+        type: 'bar',
+        data: {
+            labels: badStatesStringToArray,
+            datasets: [{
+                label: 'Profit in Dollars $',
+                data: badStatesProfitResultsArray,
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(243, 102, 255, 0.2)',
+                    'rgba(94, 159, 64, 0.2)',
+                    'rgba(187, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(243, 102, 255, 0.2)',
+                    'rgba(94, 159, 64, 0.2)',
+                    'rgba(187, 159, 64, 0.2)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            }
+        }
+    });
+
+
     </script>
 
 {% endblock %}
