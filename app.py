@@ -100,6 +100,17 @@ def insightOne():
     return render_template('insight-one.html', resultsArray=myString, profitArray = profitArray, badStatesArray=badStatesString, badStatesProfit=badProfitArray)  # render a template
 
 
+@app.route('/insight-two')
+@login_required
+def insightTwo():
+    return render_template('insight-two.html')  # render a template
+
+
+@app.route('/insight-three')
+@login_required
+def insightThree():
+    return render_template('insight-three.html')  # render a template
+
 
 # route for handling the login page logic
 @app.route('/login', methods=['GET', 'POST'])
@@ -185,8 +196,8 @@ def register():
                 return render_template('register.html', error = error)  # render a template
             else:
                 print ('SUCCESSFUL INSERT')
-                error = 'SUCCESSFULLY ADDED NEW EMPLOYEE'
-                return render_template('register.html', error = error)  # render a template
+                error = 'SUCCESS! ADDED NEW EMPLOYEE'
+                return render_template('register.html', msg = error)  # render a template
 
         else:
             print ('NO, TELL THE USER TO CHECK THEIR INPUTS...')
