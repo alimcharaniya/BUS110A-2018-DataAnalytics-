@@ -103,7 +103,53 @@ def insightOne():
 @app.route('/insight-two')
 @login_required
 def insightTwo():
-    return render_template('insight-two.html')  # render a template
+
+    # SET UP RETURNS SHEET
+
+    ReturnsOnlyData = xl.parse('Returns')
+    Order_ID_Col = ReturnsOnlyData[['Order ID']].values.tolist()
+
+    # HOW TO PRINT 1 ORDER NUMBER
+
+    oneOrderID = Order_ID_Col[0][0]
+
+    # SET UP ORDER SHEET
+
+    OrdersOnlyData = xl.parse('Orders')
+    Product_ID_Col = OrdersOnlyData[['Order ID','Product Name']].values.tolist()
+
+    returnedProductsArray = []
+
+    mostCommonlyReturnedArray = []
+
+    for l in range(4):
+        # LOOP RETURNS
+        for x in range(250):
+            singleOrderID = Order_ID_Col[x][0]
+            for d in range(9900):
+                oneOrderRow = Product_ID_Col[d]
+                if oneOrderRow[0] == singleOrderID:
+                    returnedProductsArray.append(oneOrderRow[1])
+    
+        a = most_common(returnedProductsArray)
+        mostCommonlyReturnedArray.append(a.decode('utf-8'))
+        returnedProductsArray = [x for x in returnedProductsArray if x != a]
+
+    test = ",".join(mostCommonlyReturnedArray)
+
+    print test
+    # print returnedProductsArray
+
+    # Now you have returned products array, get most commonly returned items
+    # a = most_common(returnedProductsArray)
+
+    # b = [x for x in returnedProductsArray if x != a]
+
+    return render_template('insight-two.html', mostReturnedProducts = mostCommonlyReturnedArray, testString=test)  # render a template
+
+
+def most_common(lst):
+    return max(set(lst), key=lst.count)
 
 
 @app.route('/insight-three')
