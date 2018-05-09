@@ -212,7 +212,7 @@ def insertUserIntoDatabase(fName, lName, email, uid, password):
 def checkInputs(email, uid, password):
      # 1. check if email address contains one '@' sign
     if '@' in email:
-        # print ('yes... email contains @ sign')
+        print ('yes... email contains @ sign')
     else:
         return False
 
