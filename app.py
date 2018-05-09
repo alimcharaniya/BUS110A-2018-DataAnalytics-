@@ -161,8 +161,8 @@ def insightThree():
     
     profitsInOrderOfStatesArray =  Region_Profit_Col.groupby(by='Region').sum().sort_values(by='Profit', ascending = False).values.tolist()[:4]
 
-    print profitsInOrderOfStatesArray[0]
-    print profitsInOrderOfStatesArray[0][0]
+    # print profitsInOrderOfStatesArray[0]
+    # print profitsInOrderOfStatesArray[0][0]
 
     return render_template('insight-three.html',zero=profitsInOrderOfStatesArray[0][0], one=profitsInOrderOfStatesArray[1][0], two=profitsInOrderOfStatesArray[2][0], three=profitsInOrderOfStatesArray[3][0] )  # render a template
 
@@ -187,14 +187,14 @@ def login():
                 error = 'Invalid Credentials. Please try again.'
 
         except:
-            print ("This is an error message!")
+            # print ("This is an error message!")
             error = 'Invalid Credentials. Please try again.'
 
     return render_template('login.html', error=error)
 
 
 def insertUserIntoDatabase(fName, lName, email, uid, password):
-    print ('INSERTING USER TO DB')
+    # print ('INSERTING USER TO DB')
     newUser = Employee(fName, lName, email, password, uid)
     try:
         db.session.add(newUser)
@@ -212,7 +212,7 @@ def insertUserIntoDatabase(fName, lName, email, uid, password):
 def checkInputs(email, uid, password):
      # 1. check if email address contains one '@' sign
     if '@' in email:
-        print ('yes... email contains @ sign')
+        # print ('yes... email contains @ sign')
     else:
         return False
 
@@ -246,16 +246,16 @@ def register():
             didInsert = insertUserIntoDatabase(fName, lName, email, uid, password)
 
             if(didInsert == False):
-                print ('FAILED TO INSERT')
+                # print ('FAILED TO INSERT')
                 error = 'User with that data already exists'
                 return render_template('register.html', error = error)  # render a template
             else:
-                print ('SUCCESSFUL INSERT')
+                # print ('SUCCESSFUL INSERT')
                 error = 'SUCCESS! ADDED NEW EMPLOYEE'
                 return render_template('register.html', msg = error)  # render a template
 
         else:
-            print ('NO, TELL THE USER TO CHECK THEIR INPUTS...')
+            # print ('NO, TELL THE USER TO CHECK THEIR INPUTS...')
             error = 'You must enter a valid email, numbers only for employee ID and minimum 4 characters, at least 6 characters for password...'
 
             return render_template('register.html', error = error)  # render a template
