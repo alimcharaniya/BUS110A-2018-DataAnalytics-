@@ -131,7 +131,6 @@ def insightTwo():
                 # look at all orders
                 oneOrderRow = Product_ID_Col[d]
                 if oneOrderRow[0] == singleOrderID:
-                    print oneOrderRow[1]
                     returnedProductsArray.append(oneOrderRow[1])
     
         a = most_common(returnedProductsArray)
@@ -140,13 +139,6 @@ def insightTwo():
         returnedProductsArray = [x for x in returnedProductsArray if x != a]
 
     test = ",".join(mostCommonlyReturnedArray)
-
-    # print returnedProductsArray
-
-    # Now you have returned products array, get most commonly returned items
-    # a = most_common(returnedProductsArray)
-
-    # b = [x for x in returnedProductsArray if x != a]
 
     return render_template('insight-two.html', mostReturnedProducts = mostCommonlyReturnedArray, testString=test)  # render a template
 
