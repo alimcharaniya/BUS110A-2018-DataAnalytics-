@@ -124,20 +124,23 @@ def insightTwo():
 
     for l in range(4):
         # LOOP RETURNS
-        for x in range(250):
+        for x in range(296):
+            # for each reutrn get ID from returns table
             singleOrderID = Order_ID_Col[x][0]
             for d in range(9900):
+                # look at all orders
                 oneOrderRow = Product_ID_Col[d]
                 if oneOrderRow[0] == singleOrderID:
+                    print oneOrderRow[1]
                     returnedProductsArray.append(oneOrderRow[1])
     
         a = most_common(returnedProductsArray)
+
         mostCommonlyReturnedArray.append(a.decode('utf-8'))
         returnedProductsArray = [x for x in returnedProductsArray if x != a]
 
     test = ",".join(mostCommonlyReturnedArray)
 
-    print test
     # print returnedProductsArray
 
     # Now you have returned products array, get most commonly returned items
@@ -231,6 +234,7 @@ def checkInputs(email, uid, password):
     return True
 
 @app.route('/register', methods=['GET', 'POST'])
+@login_required
 def register():
 
     if request.method == 'POST':

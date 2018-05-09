@@ -3,7 +3,7 @@
 
 <h1 class="text-center">Welcome to Office Supplies Internal Tool!</h1>
 <br>
-<p>Click <a href="/logout">here</a> to logout.</p>
+<!-- <p>Click <a href="/logout">here</a> to logout.</p> -->
 <br><br>
 
 <div class="container">
@@ -11,11 +11,11 @@
     <div class="panel panel-primary">
       <div class="panel-heading" style="text-align: center" >Performance by location</div>
       <div class="panel-body">
-          <div style="text-align: center">
-              Panel Content
+          <div class="description" style="text-align: center">
+            View which states provide the most and least profit.
           </div>
           <div style="text-align: center">
-              <button class="btn btn-primary"> <a href="/insight-one" style="color:white"> GO</a></button>
+              <button class="btn btn-warning"> <a href="/insight-one" style="color:white"> GO</a></button>
             </div>
         </div>
     </div>
@@ -24,11 +24,11 @@
     <div class="panel panel-primary">
       <div class="panel-heading" style="text-align: center">Product returns</div>
       <div class="panel-body">
-          <div style="text-align: center">
-              Panel Content
+          <div class="description" style="text-align: center">
+              View which items are returned the most. 
           </div>
           <div style="text-align: center">
-            <button class="btn btn-primary"> <a href="/insight-two" style="color:white"> GO</a></button>
+            <button class="btn btn-warning"> <a href="/insight-two" style="color:white"> GO</a></button>
           </div>
         </div>
     </div>
@@ -37,11 +37,11 @@
     <div class="panel panel-primary">
       <div class="panel-heading" style="text-align: center">Sales representatives</div>
       <div class="panel-body">
-          <div style="text-align: center">
-              Panel Content
+          <div class="description" style="text-align: center">
+              View sales representative's performance. 
           </div>
           <div style="text-align: center">
-              <button class="btn btn-primary"> <a href="/insight-three" style="color:white"> GO</a></button>
+              <button class="btn btn-warning"> <a href="/insight-three" style="color:white"> GO</a></button>
             </div>
         </div>
     </div>
@@ -50,11 +50,11 @@
     <div class="panel panel-primary">
       <div class="panel-heading" style="text-align: center">Register Users</div>
       <div class="panel-body">
-        <div style="text-align: center">
-            Panel Content
+        <div class="description" style="text-align: center">
+          Register new users to have access to the system.
         </div>
         <div style="text-align: center">
-            <button class="btn btn-primary"> <a href="/register" style="color:white"> GO</a></button>
+            <button class="btn btn-warning"> <a href="/register" style="color:white"> GO</a></button>
         </div>
       </div>
     </div>
@@ -73,12 +73,24 @@
 <br>
 {% endfor %} -->
 
+<style>
+    .insightTitle{
+      text-align: center;
+    }
+    .description{
+      font-size: 18px;
+      text-align: center;
+    }
+    .btn-warning{
+      margin-top: 50px;
+      width: 100px;
+    }
+    .panel-heading{
+      font-size: 20px;
+      font-weight: bold;
+    }
+  
+  </style>
+
 {% endblock %}
 
-
-<style>
-  .insightTitle{
-    text-align: center;
-  }
-
-</style>
