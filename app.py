@@ -155,7 +155,16 @@ def most_common(lst):
 @app.route('/insight-three')
 @login_required
 def insightThree():
-    return render_template('insight-three.html')  # render a template
+
+    OrdersDate = xl.parse('Orders')
+    Region_Profit_Col = OrdersOnlyData[['Region','Profit']]
+    
+    profitsInOrderOfStatesArray =  Region_Profit_Col.groupby(by='Region').sum().sort_values(by='Profit', ascending = False).values.tolist()[:4]
+
+    print profitsInOrderOfStatesArray[0]
+    print profitsInOrderOfStatesArray[0][0]
+
+    return render_template('insight-three.html',zero=profitsInOrderOfStatesArray[0][0], one=profitsInOrderOfStatesArray[1][0], two=profitsInOrderOfStatesArray[2][0], three=profitsInOrderOfStatesArray[3][0] )  # render a template
 
 
 # route for handling the login page logic

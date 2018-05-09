@@ -1,1 +1,61 @@
-<h1>Insight three</h1>
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Insight 3 </h1>
+
+
+<canvas id="testChart" width="400" height="400"></canvas>
+
+
+<script>
+    var ctx = document.getElementById("testChart").getContext('2d');
+    // Remove New York two seperate words and change "New" to "New York"
+    var a = Number('{{zero}}')
+    var b = Number('{{one}}')
+    var c = Number('{{two}}')
+    var d = Number('{{three}}')
+
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ["WEST", "EAST", "SOUTH", "CENTRAL" ],
+            datasets: [{
+                label: 'Profit in Dollars $',
+                data: [a,b,c,d],
+                backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)',
+                  'rgba(255, 159, 64, 0.2)',
+                  'rgba(243, 102, 255, 0.2)',
+                  'rgba(94, 159, 64, 0.2)',
+                  'rgba(187, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255,99,132,1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero:true
+                    }
+                }]
+            }
+        }
+    });
+
+
+    </script>
+{% endblock %}
